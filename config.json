@@ -1,0 +1,56 @@
+{
+  "target_directory": "~/Downloads",
+  "log_file": "~/file_organizer/file_organizer.log",
+  "dry_run": true,
+  "use_trash": true,
+  "confirm_destructive_actions": true,
+  "archive_directory_name": "Archive",
+  "organized_directories": {
+    "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".svg"],
+    "Videos": [".mp4", ".mov", ".avi", ".mkv", ".wmv", ".flv", ".webm"],
+    "Documents": [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".rtf", ".md", ".csv"],
+    "Audio": [".mp3", ".wav", ".aac", ".flac", ".ogg", ".m4a"],
+    "Archives": [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2"],
+    "Code": [".py", ".js", ".ts", ".java", ".c", ".cpp", ".cs", ".go", ".rs", ".rb", ".php", ".html", ".css", ".json", ".yaml", ".yml", ".sh"],
+    "Others": []
+  },
+  "cleanup": {
+    "delete_empty_folders": true,
+    "detect_duplicates": true,
+    "large_file_threshold_mb": 100,
+    "unused_days": 30,
+    "archive_large_unused_files": true
+  },
+  "protected_paths": [
+    "~",
+    "~/Desktop",
+    "~/Documents",
+    "~/Downloads",
+    "/",
+    "/System",
+    "/Library",
+    "/Applications",
+    "C:/Windows",
+    "C:/Program Files",
+    "C:/Program Files (x86)"
+  ],
+  "ai_categorization": {
+    "enabled": true,
+    "keyword_rules": {
+      "Images": ["screenshot", "photo", "image", "wallpaper"],
+      "Videos": ["movie", "clip", "screenrecord", "recording"],
+      "Documents": ["invoice", "receipt", "report", "resume", "notes"],
+      "Audio": ["podcast", "voice", "track", "song"],
+      "Archives": ["backup", "archive", "bundle"],
+      "Code": ["script", "source", "project", "repo"]
+    }
+  },
+  "notifications": {
+    "enabled": false,
+    "summary_email": ""
+  },
+  "schedule": {
+    "enabled": false,
+    "interval_minutes": 60
+  }
+}
