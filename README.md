@@ -7,14 +7,15 @@ Production-ready monorepo with a React Native (Expo) mobile app and FastAPI back
 - **Mobile:** React Native + Expo + Zustand + Victory charts
 - **API:** FastAPI + SQLAlchemy + JWT
 - **DB:** PostgreSQL
-- **Scheduling:** Celery worker + Celery beat + Redis
+- **Scheduling:** Celery worker + Celery beat + Redis (container mode) or Vercel Cron fallback
 - **Notifications:** Firebase Cloud Messaging (server push)
 - **AI Coach:** Rule-based fallback with OpenAI-ready integration point
 
 ## Backend API
 
 Swagger is available at:
-- `http://localhost:8000/docs`
+- `http://localhost:8000/docs` (local)
+- `https://<your-vercel-domain>/docs` (Vercel)
 
 REST endpoints:
 - `POST /auth/register`
@@ -25,6 +26,7 @@ REST endpoints:
 - `GET /score`
 - `GET /score/dashboard`
 - `GET|PUT /reminders/settings`
+- `GET /cron/reminders` (cron-triggered reminder dispatch)
 
 ## Database Schema
 
@@ -57,7 +59,8 @@ REST endpoints:
 
 ## Reminder Logic
 
-Celery Beat runs every 15 minutes and checks each user's local timezone window:
+- **Container mode**: Celery Beat runs every 15 minutes and dispatches reminders.
+- **Vercel mode**: Vercel Cron hits `/cron/reminders` every 15 minutes.
 
 ```python
 if reminders_enabled and local_time matches reminder_time window:
@@ -91,6 +94,28 @@ Score is capped at 100.
    npm run start
    ```
 
+## Deploy to Vercel (Backend API)
+
+1. Install Vercel CLI and login:
+   ```bash
+   npm i -g vercel
+   vercel login
+   ```
+2. Deploy from repo root:
+   ```bash
+   vercel --prod
+   ```
+3. Configure these Vercel environment variables:
+   - `SECRET_KEY`
+   - `DATABASE_URL` (managed Postgres URL)
+   - `FCM_CREDENTIALS_PATH` (optional if you load creds another way)
+   - `AUTO_CREATE_TABLES=false` (recommended with migrations)
+   - `CRON_SECRET=<strong-random-value>`
+4. Confirm Vercel Cron is active from `vercel.json` (`*/15 * * * *` for `/cron/reminders`).
+5. Set the mobile app API base URL to your Vercel URL in `EXPO_PUBLIC_API_URL`.
+
+> Note: Expo mobile binaries are built with EAS; Vercel hosts the backend API, not native app binaries.
+
 ## Testing
 
 ```bash
@@ -101,7 +126,7 @@ pytest -q
 
 ## Deployment
 
-- Backend deploys as Docker containers (API, Celery worker, Celery beat).
+- Backend deploys as Docker containers (API, Celery worker, Celery beat) or as a Vercel Python function.
 - PostgreSQL and Redis run as managed services or containers.
 - CI executes backend tests via GitHub Actions.
 - Mobile app can be built with EAS (`eas build --platform ios|android`).

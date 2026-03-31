@@ -12,6 +12,13 @@ class Settings(BaseSettings):
     redis_url: str = 'redis://redis:6379/0'
     fcm_credentials_path: str | None = None
     openai_api_key: str | None = None
+    auto_create_tables: bool = True
+    cron_secret: str | None = None
 
 
 settings = Settings()
+
+if settings.database_url.startswith('postgres://'):
+    settings.database_url = settings.database_url.replace('postgres://', 'postgresql+psycopg2://', 1)
+elif settings.database_url.startswith('postgresql://') and '+psycopg2' not in settings.database_url:
+    settings.database_url = settings.database_url.replace('postgresql://', 'postgresql+psycopg2://', 1)
