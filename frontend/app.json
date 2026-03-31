@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "AI Fitness Tracker",
+    "slug": "ai-fitness-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#101010"
+    },
+    "ios": { "supportsTablet": true },
+    "android": { "adaptiveIcon": { "backgroundColor": "#101010" } },
+    "plugins": ["expo-notifications"]
+  }
+}
